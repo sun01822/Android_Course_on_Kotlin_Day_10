@@ -6,9 +6,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.recyclerview.data.Data
 import de.hdodenhof.circleimageview.CircleImageView
 
 class MyAdapter(private val data : ArrayList<MyDataModel>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+    private var mOnClickListener : OnClickListener ?= null
     class MyViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.sample_user_name)
         val phone: TextView = itemView.findViewById(R.id.sample_user_number)
@@ -30,5 +32,17 @@ class MyAdapter(private val data : ArrayList<MyDataModel>) : RecyclerView.Adapte
         holder.name.text = singleData.name
         holder.phone.text = singleData.phone
         Glide.with(holder.profile.context).load(singleData.profile).into(holder.profile)
+        holder.itemView.setOnClickListener {
+            if(mOnClickListener!=null){
+                mOnClickListener!!.onClick(position,singleData)
+            }
+        }
+    }
+
+    fun setOnClickListener(onClickListener: OnClickListener){
+        this.mOnClickListener = onClickListener
+    }
+    interface OnClickListener {
+        fun onClick(index:Int, model: MyDataModel)
     }
 }

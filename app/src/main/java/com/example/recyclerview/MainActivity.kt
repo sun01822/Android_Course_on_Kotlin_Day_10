@@ -1,5 +1,6 @@
 package com.example.recyclerview
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,9 +17,22 @@ class MainActivity : AppCompatActivity() {
         data.loadData()
         initRecyclerView()
 
+
     }
     private fun initRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = MyAdapter(data.dataSource)
+        val adapter = MyAdapter(data.dataSource)
+        recyclerView.adapter = adapter
+        adapter.setOnClickListener(object : MyAdapter.OnClickListener{
+            override fun onClick(index: Int, model: MyDataModel) {
+                val intent = Intent(this@MainActivity, SecondActivity::class.java)
+                intent.putExtra("name", model.name)
+                intent.putExtra("profile", model.profile)
+                intent.putExtra("number", model.phone)
+                startActivity(intent)
+            }
+
+        })
+
     }
 }
